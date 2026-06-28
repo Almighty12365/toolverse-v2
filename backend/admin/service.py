@@ -8,15 +8,15 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from fastapi import HTTPException
-from passlib.context import CryptContext
-from sqlalchemy.orm import Session
 
+from sqlalchemy.orm import Session
+from .auth import PasswordManager
 from .constants import DEFAULT_ROLES, DEFAULT_SETTINGS
 from .repository import AdminRepository
 from .schemas import PluginManifest
 from .security import decrypt_value, encrypt_value
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 RUNTIME_CACHE_TTL_SECONDS = 30
 
