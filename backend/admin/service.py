@@ -169,7 +169,7 @@ class AdminService:
                 "roles": ["super_admin"],
                 "permissions": ["*"],
             }
-        if not pwd_context.verify(password, user.password_hash):
+        if not PasswordManager.verify(password, user.password_hash):
             raise HTTPException(status_code=401, detail="Invalid credentials")
 
         user.last_login_at = datetime.utcnow()
@@ -193,7 +193,7 @@ class AdminService:
             raise HTTPException(status_code=404, detail="Admin account not found")
         if len(new_password) < 12:
             raise HTTPException(status_code=400, detail="Password must be at least 12 characters")
-        user.password_hash = pwd_context.hash(new_password)
+        user.password_hash = PasswordManager.hash(new_password)
         user.must_change_password = False
         user.profile = {**(user.profile or {}), "bootstrap_required": False}
         self.db.add(user)
@@ -205,11 +205,11 @@ class AdminService:
         user = self.repo.get_user_by_email(email)
         if not user or not user.password_hash:
             raise HTTPException(status_code=404, detail="Admin account not found")
-        if not pwd_context.verify(current_password, user.password_hash):
+        if not PasswordManager.verify(current_password, user.password_hash):
             raise HTTPException(status_code=401, detail="Current password is invalid")
         if len(new_password) < 12:
             raise HTTPException(status_code=400, detail="Password must be at least 12 characters")
-        user.password_hash = pwd_context.hash(new_password)
+        user.password_hash = PasswordManager.hash(new_password)
         user.must_change_password = False
         self.db.add(user)
         self.write_audit(email, "auth.password_change", "user", email, {})
