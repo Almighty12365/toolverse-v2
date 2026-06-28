@@ -1,0 +1,11 @@
+/* Toolverse-only theme overrides */
+html, body, #root { background: #09090b; }
+body { color: #fff; }
+
+::selection { background: rgba(217,70,239,0.35); color: #fff; }
+
+/* Smooth scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #09090b; }
+::-webkit-scrollbar-thumb { background: #27272a; border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
